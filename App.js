@@ -1,7 +1,6 @@
 // React & React Native
 import React, { useState } from 'react'
 import { Alert, StyleSheet } from 'react-native'
-import Config from 'react-native-config'
 
 // Custom Components
 import UserEntry from './src/components/UserEntry'
