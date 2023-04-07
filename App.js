@@ -1,52 +1,87 @@
-// React & React Native
+// React & related
 import React, { useState } from 'react'
-import { Alert, StyleSheet } from 'react-native'
+import { Alert, StyleSheet, View } from 'react-native'
+import { NavigationContainer } from '@react-navigation/native'
+import { createNativeStackNavigator } from '@react-navigation/native-stack'
 
-// Custom Components
+// Custom components
 import UserEntry from './src/components/UserEntry'
 import WeatherDisplay from './src/components/WeatherDisplay'
 
 // Misc
 import { API_KEY } from './keys.js'
+
 const ZIP_FORMAT = /^[0-9]{5}$/
+const Stack = createNativeStackNavigator()
 
 
 export default function App() {
   const [ zip, setZip ] = useState('')
-  const [ showWeather, setShowWeather ] = useState(false)
   const [ weather, setWeather ] = useState(null)
 
   function clearData () {
-    setShowWeather(false)
     setWeather(null)
     setZip('')
   }
 
-  function evalZip (input) {
-    if (/^[0-9]{0,5}$/.test(input)) {
-      setZip(input)
-    }
-  }
-
-  function getWeather (props) {
-    const { e, zipCode = zip } = props
-    getLoc(zipCode)
+  async function getWeather (zipCode = zip) {
+    return getLoc(zipCode)
       .then(geoloc=>{
         if (!!geoloc) {
-          fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${geoloc.lat}&lon=${geoloc.lon}&appid=${API_KEY}&units=imperial`)
+          return fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${geoloc.lat}&lon=${geoloc.lon}&appid=${API_KEY}&units=imperial`)
             .then(r=>{
-              if (r.ok) r.json().then(weather => {
-                setWeather(weather)
-                setShowWeather(true)
+              if (r.ok) return r.json().then(data => {
+                data = {...data, ok: true, zipCode: zipCode}
+                setWeather(data)
+                return data
               })
-              else r.json().then(console.log)
+              else return r.json()
             })
+        } else {
+          return Promise.resolve({'message': 'could not find location with provided zip code'})
         }
       })
   }
 
-  if (!!weather && showWeather) return <WeatherDisplay zip={zip} weather={weather} clearData={clearData} styles={styles} />
-  else return <UserEntry zip={zip} setZip={evalZip} getWeather={getWeather} styles={styles} />
+  return (
+    <NavigationContainer>
+      <Stack.Navigator>
+        <Stack.Screen name='home'>
+          {(props) => <HomeScreen {...props} zip={zip} setZip={evalZip} getWeather={getWeather} />}
+        </Stack.Screen>
+        <Stack.Screen name='weather'>
+          {(props) => <WeatherScreen {...props} zip={zip} weather={weather} clearData={clearData} />}
+        </Stack.Screen>
+      </Stack.Navigator>
+    </NavigationContainer>
+  )
+}
+
+// Navigation screens
+
+function HomeScreen (props) {
+  return (
+    <View style={styles.wrapper}>
+      <UserEntry {...props} styles={styles} />
+    </View>
+  )
+}
+
+function WeatherScreen (props) {
+  return (
+    <View style={styles.wrapper}>
+      <WeatherDisplay {...props} styles={styles} />
+    </View>
+  )
+}
+
+
+// General functions
+
+function evalZip (input) {
+  if (/^[0-9]{0,5}$/.test(input)) {
+    setZip(input)
+  }
 }
 
 async function getLoc (zipCode) {
@@ -58,6 +93,12 @@ async function getLoc (zipCode) {
 }
 
 const styles = StyleSheet.create({
+  wrapper: {
+    height: '100%',
+    width: '100%',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   container: {
     flex: 1,
     backgroundColor: '#fff',
