@@ -10,6 +10,7 @@ import WeatherDisplay from './src/components/WeatherDisplay'
 
 // Misc
 import { API_KEY } from './keys.js'
+import STYLES from './App.scss'
 
 const ZIP_FORMAT = /^[0-9]{5}$/
 const Stack = createNativeStackNavigator()
@@ -22,6 +23,12 @@ export default function App() {
   function clearData () {
     setWeather(null)
     setZip('')
+  }
+
+  function evalZip (input) {
+    if (/^[0-9]{0,5}$/.test(input)) {
+      setZip(input)
+    }
   }
 
   async function getWeather (zipCode = zip) {
@@ -78,12 +85,6 @@ function WeatherScreen (props) {
 
 // General functions
 
-function evalZip (input) {
-  if (/^[0-9]{0,5}$/.test(input)) {
-    setZip(input)
-  }
-}
-
 async function getLoc (zipCode) {
   if (ZIP_FORMAT.test(zipCode)) {
     return fetch(`http://api.openweathermap.org/geo/1.0/zip?zip=${zipCode},US&appid=${API_KEY}`).then(r => {return r.json()})
@@ -92,15 +93,18 @@ async function getLoc (zipCode) {
   }
 }
 
+
+// CSS styling
+
 const styles = StyleSheet.create({
   wrapper: {
+    display: 'flexbox',
     height: '100%',
     width: '100%',
     alignItems: 'center',
     justifyContent: 'center',
   },
   container: {
-    flex: 1,
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
