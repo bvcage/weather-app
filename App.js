@@ -68,16 +68,16 @@ export default function App() {
 
 function HomeScreen (props) {
   return (
-    <View style={styles.wrapper}>
-      <UserEntry {...props} styles={styles} />
+    <View style={STYLES.wrapper}>
+      <UserEntry {...props} styles={STYLES} />
     </View>
   )
 }
 
 function WeatherScreen (props) {
   return (
-    <View style={styles.wrapper}>
-      <WeatherDisplay {...props} styles={styles} />
+    <View style={STYLES.wrapper}>
+      <WeatherDisplay {...props} styles={STYLES} />
     </View>
   )
 }
@@ -92,31 +92,3 @@ async function getLoc (zipCode) {
     return Alert.alert('invalid zip code', 'please enter a 5-digit zip code.')
   }
 }
-
-
-// CSS styling
-
-const styles = StyleSheet.create({
-  wrapper: {
-    display: 'flexbox',
-    height: '100%',
-    width: '100%',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  container: {
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  h1: {
-    color: 'blue'
-  },
-  h2: {
-    fontWeight: 'bold',
-    textDecorationLine: 'underline'
-  },
-  h3: {
-    fontWeight: 'bold'
-  }
-})
