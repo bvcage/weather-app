@@ -34,18 +34,19 @@ export default function App() {
   async function getWeather (zipCode = zip) {
     return getLoc(zipCode)
       .then(geoloc=>{
-        if (!!geoloc) {
+        if (!!geoloc && Object.keys(geoloc).includes('lat')) {
           return fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${geoloc.lat}&lon=${geoloc.lon}&appid=${API_KEY}&units=imperial`)
             .then(r=>{
-              if (r.ok) return r.json().then(data => {
-                data = {...data, ok: true, zipCode: zipCode}
+              console.log(r)
+              if (Object.keys(r).includes('ok') && r.ok) return r.json().then(data => {
+                data = {...data, ok: true, zipCode: zipCode, iconUrl: `https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`}
                 setWeather(data)
                 return data
               })
               else return r.json()
             })
-        } else {
-          return Promise.resolve({'message': 'could not find location with provided zip code'})
+        } else if (!!geoloc && Object.keys(geoloc).includes('message')) {
+          return Alert.alert('invalid zip code', 'zip code does not exist.')
         }
       })
   }
@@ -89,6 +90,6 @@ async function getLoc (zipCode) {
   if (ZIP_FORMAT.test(zipCode)) {
     return fetch(`http://api.openweathermap.org/geo/1.0/zip?zip=${zipCode},US&appid=${API_KEY}`).then(r => {return r.json()})
   } else {
-    return Alert.alert('invalid zip code', 'please enter a 5-digit zip code.')
+    return Alert.alert('invalid zip code', 'zip code must be 5 digits.')
   }
 }
