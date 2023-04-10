@@ -1,9 +1,13 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Image, Text, View } from 'react-native'
 import { LinearGradient } from 'expo-linear-gradient'
 
 const WeatherDisplay = (props) => {
-  const { navigation, weather, zip, styles, clearData } = props
+  const { navigation, weather, zip, styles, clearData, colors, setColors } = props
+
+  useEffect(() => {
+    setColors(makeGradient(weather.weather[0].id))
+  }, [])
 
   if (!weather) {
     return (
@@ -31,8 +35,6 @@ const WeatherDisplay = (props) => {
     }
     return colors
   }
-
-  const colors = makeGradient(weather.weather[0].id, weather.main.temp_max, weather.main.temp_min)
 
   return (
     <React.Fragment>

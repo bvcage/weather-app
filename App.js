@@ -19,6 +19,7 @@ const Stack = createNativeStackNavigator()
 export default function App() {
   const [ zip, setZip ] = useState('')
   const [ weather, setWeather ] = useState(null)
+  const [ colors, setColors ] = useState(['#87c1ff', '#8ed5ff', '#75b0fe'])
 
   function clearData () {
     setWeather(null)
@@ -37,7 +38,6 @@ export default function App() {
         if (!!geoloc && Object.keys(geoloc).includes('lat')) {
           return fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${geoloc.lat}&lon=${geoloc.lon}&appid=${API_KEY}&units=imperial`)
             .then(r=>{
-              console.log(r)
               if (Object.keys(r).includes('ok') && r.ok) return r.json().then(data => {
                 data = {...data, ok: true, zipCode: zipCode, iconUrl: `https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`}
                 setWeather(data)
@@ -55,10 +55,10 @@ export default function App() {
     <NavigationContainer>
       <Stack.Navigator>
         <Stack.Screen name='home'>
-          {(props) => <HomeScreen {...props} zip={zip} setZip={evalZip} getWeather={getWeather} />}
+          {(props) => <HomeScreen {...props} zip={zip} setZip={evalZip} getWeather={getWeather} colors={colors} />}
         </Stack.Screen>
         <Stack.Screen name='weather'>
-          {(props) => <WeatherScreen {...props} zip={zip} weather={weather} clearData={clearData} />}
+          {(props) => <WeatherScreen {...props} zip={zip} weather={weather} clearData={clearData} colors={colors} setColors={setColors} />}
         </Stack.Screen>
       </Stack.Navigator>
     </NavigationContainer>
