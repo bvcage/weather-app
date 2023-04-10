@@ -1,5 +1,5 @@
-import { Button, Text, TextInput, View } from 'react-native'
 import React from 'react'
+import { Button, Text, TextInput, View } from 'react-native'
 
 const UserEntry = (props) => {
   const { navigation, zip, setZip, getWeather, styles } = props
@@ -19,7 +19,7 @@ const UserEntry = (props) => {
         title='enter'
         onPress={() => {
           getWeather().then(r=>{
-            if (!!r.ok) navigation.navigate('weather')
+            if (!!r && r.ok) navigation.navigate('weather')
           })
         }}
       />
