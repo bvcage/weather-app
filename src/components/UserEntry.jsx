@@ -21,9 +21,11 @@ const UserEntry = (props) => {
         <Button
           title='enter'
           onPress={() => {
-            getWeather().then(r=>{
-              if (!!r && r.ok) navigation.navigate('weather')
-            })
+            getWeather()
+              .then(r=>{
+                if (!!r && r.ok) navigation.navigate('weather')
+              })
+              .catch(err => console.log(err))
           }}
         />
       </View>
