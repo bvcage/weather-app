@@ -5,7 +5,7 @@ import { MaterialIcons } from '@expo/vector-icons'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
 
 const WeatherDisplay = (props) => {
-  const { navigation, weather, forecast, zip, styles, clearData, colors, setColors } = props
+  const { navigation, weather, forecast, zip, styles, clearData, colors, setColors, isFav, favLoc } = props
 
   useEffect(() => {
     setColors(makeGradient(weather.weather[0].id))
@@ -52,6 +52,7 @@ const WeatherDisplay = (props) => {
         <View style={{...styles.container, flexDirection: 'row'}}>
           <MaterialIcons name="location-pin" size={24} color="black" />
           <Text style={styles.h2}>{forecast.city.name}</Text>
+          <MaterialCommunityIcons name={isFav ? 'star' : 'star-outline'} size={24} color='#f3c331' onPress={() => favLoc(weather.coord)} />
         </View>
 
         {/* Main interface */}

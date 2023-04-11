@@ -1,6 +1,6 @@
 // React & related
 import React, { useState } from 'react'
-import { Alert, SafeAreaView, View } from 'react-native'
+import { Alert, SafeAreaView, Text, View } from 'react-native'
 import { NavigationContainer } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 
@@ -13,6 +13,7 @@ import { API_KEY } from './keys.js'
 import STYLES from './App.scss'
 import { LinearGradient } from 'expo-linear-gradient'
 import LocSearchBar from './src/components/LocSearchBar'
+import LocFavorites from './src/components/LocFavorites'
 
 const ZIP_FORMAT = /^[0-9]{5}$/
 const Stack = createNativeStackNavigator()
@@ -23,6 +24,8 @@ export default function App() {
   const [ weather, setWeather ] = useState(null)
   const [ forecast, setForecast ] = useState(null)
   const [ colors, setColors ] = useState(['#87c1ff', '#8ed5ff', '#75b0fe'])
+  const [ favs, setFavs ] = useState([])
+  const favLoc = (loc) => setFavs([...favs, loc])
 
   function clearData () {
     setWeather(null)
@@ -35,11 +38,29 @@ export default function App() {
     }
   }
 
+  function isLocInFavs (input) {
+    let result = -1
+    if (!!favs[0]) {
+      result = favs.findIndex(item => item.lat.toFixed(4) === input.lat.toFixed(4) && item.lon.toFixed(4) === input.lon.toFixed(4))
+    }
+    return result > -1
+  }
+
+  function toggleFav (input) {
+    const existing = isLocInFavs(input)
+    if (existing) {
+      const list = favs.filter(item => item.lat.toFixed(4) !== input.lat.toFixed(4) && item.lon.toFixed(4) !== input.lon.toFixed(4))
+      setFavs(list)
+    } else {
+      favLoc(input)
+    }
+  }
+
   async function getWeather (geoloc) {
     if (!!geoloc && !!geoloc.lat) {
-      return getCurrWeather(geoloc, setWeather)
+      return getForecast(geoloc, setForecast)
         .then(r => {
-          return getForecast(geoloc, setForecast)
+          return getCurrWeather(geoloc, setWeather)
         })
     } else if (!!geoloc && !!geoloc.message) {
       return Alert.alert('invalid zip code', 'zip code does not exist.')
@@ -55,11 +76,30 @@ export default function App() {
     <React.Fragment>
       <NavigationContainer>
         <Stack.Navigator>
-          <Stack.Screen name='home'>
-            {(props) => <HomeScreen {...props} zip={zip} setZip={evalZip} getWeather={getWeather} getWeatherByZip={getWeatherByZip} colors={colors} />}
+          <Stack.Screen name='home' options={{headerShown: false}}>
+            {(props) => <HomeScreen
+                          {...props}
+                          zip={zip}
+                          setZip={evalZip}
+                          getWeather={getWeather}
+                          getWeatherByZip={getWeatherByZip}
+                          colors={colors}
+                          favs={favs}
+                          setFavs={setFavs}
+                        />}
           </Stack.Screen>
           <Stack.Screen name='weather'>
-            {(props) => <WeatherScreen {...props} zip={zip} weather={weather} forecast={forecast} clearData={clearData} colors={colors} setColors={setColors} />}
+            {(props) => <WeatherScreen
+                          {...props}
+                          zip={zip}
+                          weather={weather}
+                          forecast={forecast}
+                          clearData={clearData}
+                          colors={colors}
+                          setColors={setColors}
+                          isFav={isLocInFavs(weather.coord)}
+                          favLoc={toggleFav}
+                        />}
           </Stack.Screen>
         </Stack.Navigator>
       </NavigationContainer>
@@ -71,10 +111,12 @@ export default function App() {
 
 function HomeScreen (props) {
   return (
-    <View>
+    <View style={STYLES.wrapper}>
       <LinearGradient {...props} style={STYLES.background} />
-      <LocSearchBar {...props} styles={STYLES} />
-      <UserEntry {...props} styles={STYLES} />
+      <SafeAreaView style={STYLES.wrapper}>
+        <LocSearchBar {...props} styles={STYLES} />
+        <LocFavorites {...props} styles={STYLES} />
+      </SafeAreaView>
     </View>
   )
 }

@@ -41,10 +41,12 @@ const LocSearchBar = (props) => {
   }
 
   return (
-    <View style={{width: '80%'}}>
+    <View style={styles.searchbarContainer}>
       <SearchBar
-        // containerStyle={{width: '100%'}}
+        containerStyle={styles.searchbar}
+        inputContainerStyle={styles.searchbarInput}
         placeholder='city, state, country'
+        round
         value={search}
         onChangeText={updateSearch}
       />
@@ -52,11 +54,15 @@ const LocSearchBar = (props) => {
         !!cities[0]
         ? cities.map(city => {
           return (
-            <ListItem bottomDivider onPress={(e) => chooseCity(city)}>
-              <ListItem.Content>
-                <ListItem.Title>{city.name}</ListItem.Title>
-                <ListItem.Subtitle>{city.state}, {city.country}</ListItem.Subtitle>
-              </ListItem.Content>
+            <ListItem
+              key={city.lat + city.lon}
+              bottomDivider
+              onPress={(e) => chooseCity(city)}
+              >
+                <ListItem.Content>
+                  <ListItem.Title>{city.name}</ListItem.Title>
+                  <ListItem.Subtitle>{city.state}, {city.country}</ListItem.Subtitle>
+                </ListItem.Content>
             </ListItem>
           )
         })
