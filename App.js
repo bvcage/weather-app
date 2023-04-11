@@ -5,7 +5,6 @@ import { NavigationContainer } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 
 // Custom components
-import UserEntry from './src/components/UserEntry'
 import WeatherDisplay from './src/components/WeatherDisplay'
 
 // Misc
