@@ -2,7 +2,7 @@ import React from 'react'
 import { Button, Text, TextInput, View } from 'react-native'
 
 const UserEntry = (props) => {
-  const { navigation, zip, setZip, getWeather, styles, colors } = props
+  const { navigation, zip, setZip, getWeatherByZip, styles, colors } = props
   return (
     <React.Fragment>
       <View style={styles.container}>
@@ -19,7 +19,7 @@ const UserEntry = (props) => {
         <Button
           title='enter'
           onPress={() => {
-            getWeather()
+            getWeatherByZip()
               .then(r=>{
                 if (!!r && r.ok) navigation.navigate('weather')
               })

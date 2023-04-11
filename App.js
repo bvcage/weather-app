@@ -35,18 +35,20 @@ export default function App() {
     }
   }
 
-  async function getWeather (zipCode = zip) {
+  async function getWeather (geoloc) {
+    if (!!geoloc && !!geoloc.lat) {
+      return getCurrWeather(geoloc, setWeather)
+        .then(r => {
+          return getForecast(geoloc, setForecast)
+        })
+    } else if (!!geoloc && !!geoloc.message) {
+      return Alert.alert('invalid zip code', 'zip code does not exist.')
+    }
+  }
+
+  async function getWeatherByZip (zipCode = zip) {
     return getLoc(zipCode)
-      .then(geoloc=>{
-        if (!!geoloc && !!geoloc.lat) {
-          return getCurrWeather(geoloc, setWeather)
-            .then(r => {
-              return getForecast(geoloc, setForecast)
-            })
-        } else if (!!geoloc && !!geoloc.message) {
-          return Alert.alert('invalid zip code', 'zip code does not exist.')
-        }
-      })
+      .then(geoloc => getWeather(geoloc))
   }
 
   return (
@@ -54,7 +56,7 @@ export default function App() {
       <NavigationContainer>
         <Stack.Navigator>
           <Stack.Screen name='home'>
-            {(props) => <HomeScreen {...props} zip={zip} setZip={evalZip} getWeather={getWeather} colors={colors} />}
+            {(props) => <HomeScreen {...props} zip={zip} setZip={evalZip} getWeather={getWeather} getWeatherByZip={getWeatherByZip} colors={colors} />}
           </Stack.Screen>
           <Stack.Screen name='weather'>
             {(props) => <WeatherScreen {...props} zip={zip} weather={weather} forecast={forecast} clearData={clearData} colors={colors} setColors={setColors} />}
@@ -69,9 +71,9 @@ export default function App() {
 
 function HomeScreen (props) {
   return (
-    <View style={STYLES.wrapper}>
-      <LinearGradient colors={props.colors} style={STYLES.background} />
-      <LocSearchBar styles={STYLES} />
+    <View>
+      <LinearGradient {...props} style={STYLES.background} />
+      <LocSearchBar {...props} styles={STYLES} />
       <UserEntry {...props} styles={STYLES} />
     </View>
   )
