@@ -3,15 +3,19 @@ import React from 'react'
 import LocationMiniCard from './LocationMiniCard'
 
 const LocFavorites = (props) => {
-  const { favs, getWeather, styles } = props
+  const { navigation, favs, getWeather, styles } = props
 
-  if (!favs[0]) return <></>
+  if (!favs[0]) return (
+    <View style={styles.container}>
+      <Text>no favorites yet :(</Text>
+    </View>
+  )
   return (
     <ScrollView>
       <View style={{...styles.container, flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-evenly', columnGap: 10, rowGap: 20}}>
         {favs.map(loc => {
           return (
-            <LocationMiniCard key={loc.lat + loc.lon} loc={loc} getWeather={getWeather} styles={styles} />
+            <LocationMiniCard key={loc.lat + loc.lon} loc={loc} getWeather={getWeather} styles={styles} navigation={navigation} />
           )
         })}
       </View>
