@@ -52,19 +52,20 @@ const WeatherDisplay = (props) => {
 
         {/* Main interface */}
         <View style={styles.container}>
-          <Image style={styles.weatherIcon} source={{url: weather.iconUrl}} />
-          <Text>{weather.weather[0].description}</Text>
+          <Image style={styles.weatherIcon} source={{url: `https://openweathermap.org/img/wn/${weather.weather[0].icon}@2x.png`}} />
+          <Text>{weather.weather[0].main}</Text>
           <View style={{display: 'flex', flexDirection: 'row', alignItems: 'flex-start'}}>
+            <MaterialCommunityIcons name="temperature-fahrenheit" size={12} color="transparent" style={{paddingTop: '10%'}} />
             <Text style={styles.currTemp}>{Math.floor(weather.main.temp)}</Text>
             <MaterialCommunityIcons name="temperature-fahrenheit" size={24} color="black" style={{paddingTop: '10%'}} />
           </View>
           <View style={{display: 'flex', flexDirection: 'row', justifyContent: 'center', minWidth: 150, width: '50%'}}>
             <View style={{display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 5}}>
-              <MaterialCommunityIcons name="thermometer-chevron-up" size={16} color="black" style={styles.miniIcon} />
+              <MaterialCommunityIcons name="thermometer-chevron-up" size={16} color="red" style={styles.miniIcon} />
               <Text>{`${weather.main.temp_max.toFixed(1)}\u00B0`}</Text>
             </View>
             <View style={{display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 5}}>
-              <MaterialCommunityIcons name="thermometer-chevron-down" size={16} color="black" style={styles.miniIcon} />
+              <MaterialCommunityIcons name="thermometer-chevron-down" size={16} color="blue" style={styles.miniIcon} />
               <Text>{`${weather.main.temp_min.toFixed(1)}\u00B0`}</Text>
             </View>
           </View>
