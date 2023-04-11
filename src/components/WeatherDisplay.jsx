@@ -85,7 +85,7 @@ const WeatherDisplay = (props) => {
             </View> */}
             <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'center'}}>
               <MaterialCommunityIcons name="weather-windy" size={16} color="black" style={styles.miniIcon} />
-              <Text>{`${Math.round(weather.wind.speed)} mi/hr`}</Text>
+              <Text>{`${Math.round(weather.wind.speed)} mph`}</Text>
             </View>
           </View>
         </View>

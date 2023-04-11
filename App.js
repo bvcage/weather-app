@@ -88,7 +88,7 @@ export default function App() {
                           setFavs={setFavs}
                         />}
           </Stack.Screen>
-          <Stack.Screen name='weather'>
+          <Stack.Screen name='weather' options={{title: '', headerStyle: {backgroundColor: colors[0]}, headerShadowVisible: false, headerTintColor: 'grey'}}>
             {(props) => <WeatherScreen
                           {...props}
                           zip={zip}
