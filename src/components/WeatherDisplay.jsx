@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react'
 import { Image, SafeAreaView, ScrollView, Text, View } from 'react-native'
-import { LinearGradient } from 'expo-linear-gradient'
 import ForecastMiniCard from './ForecastMiniCard'
 import { MaterialIcons } from '@expo/vector-icons'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
@@ -22,16 +21,22 @@ const WeatherDisplay = (props) => {
 
   function makeGradient (code, ...temps) {
     let colors
-    switch(Math.floor(code / 100)) {
-      case 2:   // Thunderstorm
-      case 3:   // Drizzle
-      case 5:   // Rain
+    switch(true) {
+      case (200 <= code && code < 300):   // Thunderstorm
+      case (300 <= code && code < 400):   // Drizzle
+      case (500 <= code && code < 600):   // Rain
         colors = ['#1d4199', '#011752']
         break
-      case 6:   // Snow
+      case (600 <= code && code < 700):   // Snow
         colors = ['#d2eaf9', '#effaff', '#bee8fd']
         break
-      case 8:   // Clear or Clouds
+      case (code === 701):                // Mist
+      case (code === 711):                // Smoke
+      case (code === 721):                // Haze
+      case (code === 741):                // Fog
+        colors = ['#bdbdbd', '#d4d4d4', '#afafae']
+        break
+      case (800 <= code && code < 900):   // Clear or Clouds
       default:
         colors = ['#87c1ff', '#8ed5ff', '#75b0fe']
         break
@@ -41,7 +46,6 @@ const WeatherDisplay = (props) => {
   
   return (
     <React.Fragment>
-      <LinearGradient colors={colors} style={styles.background} />
       <SafeAreaView style={styles.container}>
 
         {/* Location */}
