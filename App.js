@@ -12,6 +12,7 @@ import WeatherDisplay from './src/components/WeatherDisplay'
 import { API_KEY } from './keys.js'
 import STYLES from './App.scss'
 import { LinearGradient } from 'expo-linear-gradient'
+import LocSearchBar from './src/components/LocSearchBar'
 
 const ZIP_FORMAT = /^[0-9]{5}$/
 const Stack = createNativeStackNavigator()
@@ -50,7 +51,6 @@ export default function App() {
 
   return (
     <React.Fragment>
-      <LinearGradient colors={colors} style={STYLES.background} />
       <NavigationContainer>
         <Stack.Navigator>
           <Stack.Screen name='home'>
@@ -70,6 +70,8 @@ export default function App() {
 function HomeScreen (props) {
   return (
     <View style={STYLES.wrapper}>
+      <LinearGradient colors={props.colors} style={STYLES.background} />
+      <LocSearchBar styles={STYLES} />
       <UserEntry {...props} styles={STYLES} />
     </View>
   )
@@ -78,6 +80,7 @@ function HomeScreen (props) {
 function WeatherScreen (props) {
   return (
     <View style={STYLES.wrapper}>
+      <LinearGradient colors={props.colors} style={STYLES.background} />
       <WeatherDisplay {...props} styles={STYLES} />
     </View>
   )
