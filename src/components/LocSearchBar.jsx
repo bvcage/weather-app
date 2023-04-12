@@ -14,7 +14,6 @@ const LocSearchBar = (props) => {
   const clearSearch = () => setSearch('')
   const updateSearch = (text) => setSearch(text)
   const [ timer, setTimer ] = useState(undefined)
-  const [ selection, setSelection ] = useState({})
 
   useEffect(() => {
     clearTimeout(timer)
@@ -30,7 +29,6 @@ const LocSearchBar = (props) => {
   }, [search])
 
   function chooseCity (city) {
-    setSelection(city)
     getWeather(city).then(r=>{
       if (!!r && r.ok) {
         clearSearch()
