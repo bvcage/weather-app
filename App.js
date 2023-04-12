@@ -1,6 +1,7 @@
 // React & related
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Alert, SafeAreaView, Text, View } from 'react-native'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 import { NavigationContainer } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 
@@ -26,6 +27,13 @@ export default function App() {
   const [ favs, setFavs ] = useState([])
   const favLoc = (loc) => setFavs([...favs, loc])
 
+  useEffect(() => {
+    AsyncStorage.getItem('user_fav_locs')
+      .then(value => {
+        if (value !== null) setFavs(JSON.parse(value))
+      })
+  }, [])
+
   function clearData () {
     setWeather(null)
     setZip('')
@@ -50,8 +58,10 @@ export default function App() {
     if (existing) {
       const list = favs.filter(item => item.lat.toFixed(4) !== input.lat.toFixed(4) && item.lon.toFixed(4) !== input.lon.toFixed(4))
       setFavs(list)
+      AsyncStorage.setItem('user_fav_locs', JSON.stringify(list))
     } else {
       favLoc(input)
+      AsyncStorage.setItem('user_fav_locs', JSON.stringify([...favs, input]))
     }
   }
 
