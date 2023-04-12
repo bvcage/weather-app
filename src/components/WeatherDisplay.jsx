@@ -50,15 +50,17 @@ const WeatherDisplay = (props) => {
 
         {/* Location */}
         <View style={{...styles.container, flexDirection: 'row'}}>
-          <MaterialIcons name="location-pin" size={24} color="black" />
-          <Text style={styles.h2}>{forecast.city.name}</Text>
-          <MaterialCommunityIcons name={isFav ? 'star' : 'star-outline'} size={24} color='#f3c331' onPress={() => favLoc(weather.coord)} />
+          <MaterialIcons name="location-pin" size={32} color='#e86f4c' />
+          <View>
+            <Text style={styles.h2}>{forecast.city.name}</Text>
+          </View>
+          <MaterialCommunityIcons name={isFav ? 'star' : 'star-outline'} size={32} color='#f3c331' onPress={() => favLoc(weather.coord)} />
         </View>
 
         {/* Main interface */}
         <View style={styles.container}>
           <Image style={styles.weatherIcon} source={{url: `https://openweathermap.org/img/wn/${weather.weather[0].icon}@2x.png`}} />
-          <Text>{weather.weather[0].main}</Text>
+          <Text style={{padding: 0, margin: 0}}>{weather.weather[0].main}</Text>
           <View style={{display: 'flex', flexDirection: 'row', alignItems: 'flex-start'}}>
             <MaterialCommunityIcons name="temperature-fahrenheit" size={12} color="transparent" style={{paddingTop: '10%'}} />
             <Text style={styles.currTemp}>{Math.floor(weather.main.temp)}</Text>

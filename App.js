@@ -1,6 +1,6 @@
 // React & related
 import React, { useEffect, useState } from 'react'
-import { Alert, SafeAreaView, Text, View } from 'react-native'
+import { Alert, KeyboardAvoidingView, SafeAreaView, Text, View } from 'react-native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { NavigationContainer } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
@@ -123,8 +123,11 @@ function HomeScreen (props) {
     <View style={STYLES.wrapper}>
       <LinearGradient {...props} style={STYLES.background} />
       <SafeAreaView style={STYLES.wrapper}>
-        <LocSearchBar {...props} styles={STYLES} />
-        <LocFavorites {...props} styles={STYLES} />
+        <KeyboardAvoidingView style={STYLES.wrapper} behavior='padding'>
+          <Text style={STYLES.h1}>favorite cities</Text>
+          <LocFavorites {...props} styles={STYLES} />
+          <LocSearchBar {...props} styles={STYLES} />
+        </KeyboardAvoidingView>
       </SafeAreaView>
     </View>
   )

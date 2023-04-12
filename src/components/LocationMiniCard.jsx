@@ -26,8 +26,9 @@ const LocationMiniCard = (props) => {
       <TouchableOpacity onPress={handleSelect}>
         <View style={{flexDirection: 'column', alignItems: 'center'}}>
           <Image style={styles.weatherIconMini} source={{uri: `https://openweathermap.org/img/wn/${forecast.list[0].weather[0].icon}@2x.png`}}/>
+          <Text style={styles.h4}>{forecast.city.name}</Text>
         </View>
-        <View style={{flexDirection: 'row', alignItems: 'center'}}>
+        <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'space-evenly'}}>
           <Text style={styles.currTempMini}>{`${Math.floor(forecast.list[0].main.temp)}\u00B0`}</Text>
           <View>
             <View style={{flexDirection: 'row'}}>
@@ -40,7 +41,6 @@ const LocationMiniCard = (props) => {
             </View>
           </View>
         </View>
-        <Text>{forecast.city.name}</Text>
       </TouchableOpacity>
     </Card>
   )
