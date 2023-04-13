@@ -8,7 +8,7 @@ const ForecastMiniCard = (props) => {
   return (
     <Card containerStyle={styles.miniCard}>
       <View style={styles.miniContainer}>
-        <Image style={styles.weatherIconMini} source={{uri: `https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`}}/>
+        <Image style={styles.weatherIconUltraMini} source={{uri: `https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`}}/>
         <Text>{`${Math.round(data.main.temp)}\u00B0`}</Text>
         <Text>{timestamp.toLocaleTimeString([], {hour: '2-digit'})}</Text>
       </View>

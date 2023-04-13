@@ -25,7 +25,7 @@ const LocationMiniCard = (props) => {
     getWeather(loc).then(() => navigation.navigate('weather'))
   }
 
-  if (!weather || !forecast || !forecast.list) return <></>
+  if (!weather || !weather.weather || !forecast || !forecast.list) return <></>
   return (
     <Card containerStyle={{margin: 0}}>
       <TouchableOpacity onPress={handleSelect}>

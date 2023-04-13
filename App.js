@@ -1,19 +1,19 @@
 // React & related
 import React, { useEffect, useState } from 'react'
-import { Alert, KeyboardAvoidingView, SafeAreaView, Text, View } from 'react-native'
+import { Alert, View } from 'react-native'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { NavigationContainer } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 
 // Custom components
+import HomeScreen from './src/screens/HomeScreen'
 import WeatherDisplay from './src/components/WeatherDisplay'
+import WeatherScreen from './src/screens/WeatherScreen'
 
 // Misc
 import { API_KEY } from './keys.js'
 import STYLES from './App.scss'
 import { LinearGradient } from 'expo-linear-gradient'
-import LocSearchBar from './src/components/LocSearchBar'
-import LocFavorites from './src/components/LocFavorites'
 
 const ZIP_FORMAT = /^[0-9]{5}$/
 const Stack = createNativeStackNavigator()
@@ -33,11 +33,6 @@ export default function App() {
         if (value !== null) setFavs(JSON.parse(value))
       })
   }, [])
-
-  function clearData () {
-    setWeather(null)
-    setZip('')
-  }
 
   function evalZip (input) {
     if (/^[0-9]{0,5}$/.test(input)) {
@@ -95,6 +90,7 @@ export default function App() {
                           colors={colors}
                           favs={favs}
                           setFavs={setFavs}
+                          styles={STYLES}
                         />}
           </Stack.Screen>
           <Stack.Screen name='weather' options={{title: '', headerStyle: {backgroundColor: colors[0]}, headerShadowVisible: false, headerTintColor: 'grey'}}>
@@ -103,42 +99,16 @@ export default function App() {
                           zip={zip}
                           weather={weather}
                           forecast={forecast}
-                          clearData={clearData}
                           colors={colors}
                           setColors={setColors}
                           isFav={isLocInFavs(weather.coord)}
                           favLoc={toggleFav}
+                          styles={STYLES}
                         />}
           </Stack.Screen>
         </Stack.Navigator>
       </NavigationContainer>
     </React.Fragment>
-  )
-}
-
-// Navigation screens
-
-function HomeScreen (props) {
-  return (
-    <View style={STYLES.wrapper}>
-      <LinearGradient {...props} style={STYLES.background} />
-      <SafeAreaView style={STYLES.wrapper}>
-        <KeyboardAvoidingView style={STYLES.wrapper} behavior='padding'>
-          <Text style={STYLES.h1}>favorite cities</Text>
-          <LocFavorites {...props} styles={STYLES} />
-          <LocSearchBar {...props} styles={STYLES} />
-        </KeyboardAvoidingView>
-      </SafeAreaView>
-    </View>
-  )
-}
-
-function WeatherScreen (props) {
-  return (
-    <View style={STYLES.wrapper}>
-      <LinearGradient colors={props.colors} style={STYLES.background} />
-      <WeatherDisplay {...props} styles={STYLES} />
-    </View>
   )
 }
 

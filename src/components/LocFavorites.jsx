@@ -8,6 +8,7 @@ const LocFavorites = (props) => {
   if (!favs[0]) return (
     <View style={styles.container}>
       <Text>no favorites yet :(</Text>
+      <Text>search for a location below</Text>
     </View>
   )
   return (
