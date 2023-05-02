@@ -5,6 +5,7 @@ import { LinearGradient } from 'expo-linear-gradient'
 import WeatherDisplay from '../components/WeatherDisplay'
 
 import { MAPS_API_KEY } from '../../keys'
+import WeatherAnimation from '../components/WeatherAnimation'
 
 const WeatherScreen = (props) => {
   const { weather, styles } = props
@@ -41,7 +42,8 @@ const WeatherScreen = (props) => {
   if (!!MAPS_API_KEY) return (
     <ImageBackground source={{uri: genMapSrc()}} resizeMode='cover' style={styles.backgroundMap}>
       <View style={styles.wrapper}>
-        <LinearGradient colors={props.colors} style={styles.backgroundGradient} />
+        <LinearGradient colors={props.colors} style={{...styles.backgroundGradient, opacity: 0.75}} />
+        <WeatherAnimation code={weather.weather[0].id} {...props} />
         <WeatherDisplay {...props} styles={styles} />
       </View>
     </ImageBackground>
@@ -49,6 +51,7 @@ const WeatherScreen = (props) => {
   else return (
     <View style={styles.wrapper}>
       <LinearGradient colors={props.colors} style={styles.backgroundGradient} />
+      <WeatherAnimation code={weather.weather[0].id} {...props} />
       <WeatherDisplay {...props} styles={styles} />
     </View>
   )

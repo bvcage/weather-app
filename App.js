@@ -93,7 +93,7 @@ export default function App() {
                           styles={STYLES}
                         />}
           </Stack.Screen>
-          <Stack.Screen name='weather' options={{title: '', headerStyle: {backgroundColor: colors[0]}, headerShadowVisible: false, headerTintColor: 'grey'}}>
+          <Stack.Screen name='weather' options={{title: '', headerStyle: {backgroundColor: colors[0]}, headerShadowVisible: false, headerTintColor: 'white'}}>
             {(props) => <WeatherScreen
                           {...props}
                           zip={zip}

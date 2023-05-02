@@ -59,7 +59,7 @@ const WeatherDisplay = (props) => {
       case (200 <= code && code < 300):   // Thunderstorm
       case (300 <= code && code < 400):   // Drizzle
       case (500 <= code && code < 600):   // Rain
-        colors = ['#1d4199', '#011752']
+        colors = ['#395080', '#3f7590', '#798f9f']
         break
       case (600 <= code && code < 700):   // Snow
         colors = ['#d2eaf9', '#effaff', '#bee8fd']
